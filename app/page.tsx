@@ -1,41 +1,31 @@
 'use client';
 
 import { ProjectCard } from "@/components/project-card";
-import { SwipeableCardStack } from "@/components/swipeable-card-stack";
+import { BottomNav } from "@/components/bottom-nav";
+import { HomeIcon, AppWindow, Code2Icon, Users2Icon } from 'lucide-react';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { BrandTelegram } from "@/components/icons/brand-telegram";
 import { CoveyLogo } from "@/components/icons/covey-logo";
 
-const projects = [
+const navigationCards = [
   {
-    name: "AI Chat Assistant",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
-    tags: ["AI", "ChatGPT", "Machine Learning"],
-    telegramLink: "https://t.me/your_bot_name"
+    icon: AppWindow,
+    title: "Telegram Apps",
+    description: "Explore our collection of powerful Telegram bots and applications",
+    href: "/apps"
   },
   {
-    name: "Smart Home Controller",
-    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f",
-    tags: ["IoT", "Automation", "Smart Home"],
-    telegramLink: "https://t.me/your_bot_name"
+    icon: Code2Icon,
+    title: "Development",
+    description: "Custom development services and solutions",
+    href: "/dev"
   },
   {
-    name: "Crypto Portfolio Tracker",
-    image: "https://images.unsplash.com/photo-1621761191319-c6fb62004040",
-    tags: ["Crypto", "Finance", "Blockchain"],
-    telegramLink: "https://t.me/your_bot_name"
-  },
-  {
-    name: "Travel Planner",
-    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828",
-    tags: ["Travel", "Planning", "Maps"],
-    telegramLink: "https://t.me/your_bot_name"
-  },
-  {
-    name: "Fitness Coach",
-    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438",
-    tags: ["Health", "Fitness", "Coaching"],
-    telegramLink: "https://t.me/your_bot_name"
+    icon: Users2Icon,
+    title: "Partners",
+    description: "Meet our trusted partners and collaborators",
+    href: "/partners"
   }
 ];
 
@@ -53,18 +43,18 @@ export default function Home() {
   };
 
   return (
-    <div className="gradient-bg min-h-screen pb-20">
+    <div className="gradient-bg min-h-screen pb-24">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-lg border-b border-[#528385]/20">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <CoveyLogo className="w-[120px] h-auto" />
-          <a 
-            href="https://t.me/CoveySupport" 
-            target="_blank" 
+          <a
+            href="https://t.me/EspenCovey"
+            target="_blank"
             rel="noopener noreferrer"
           >
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               className="text-white hover:bg-[#528385]/20 gap-2"
             >
               <BrandTelegram className="w-5 h-5" />
@@ -85,21 +75,33 @@ export default function Home() {
               {user.name} 👋
             </h1>
             <p className="text-base sm:text-lg text-white/80 mt-2 leading-relaxed max-w-2xl">
-              Welcome to Covey's portfolio of innovative Telegram applications. Explore our collection of powerful bots designed to enhance your digital experience.
+              Welcome to Covey's portfolio of innovative solutions. Explore our services and discover how we can help you succeed.
             </p>
           </div>
         </section>
 
-        {/* Projects Section */}
-        <section className="pt-8">
-          <SwipeableCardStack
-            items={projects}
-            renderItem={(project) => (
-              <ProjectCard project={project} />
-            )}
-          />
+        {/* Navigation Cards */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
+          {navigationCards.map((card) => {
+            const Icon = card.icon;
+            return (
+              <Link 
+                key={card.title} 
+                href={card.href}
+                className="group relative overflow-hidden rounded-2xl border border-[#528385]/20 bg-[#528385]/10 hover:bg-[#528385]/15 backdrop-blur-sm p-6 transition-all duration-300 hover:scale-[1.02]"
+              >
+                <div className="relative z-10">
+                  <Icon className="w-12 h-12 text-[#528385] mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">{card.title}</h3>
+                  <p className="text-white/80">{card.description}</p>
+                </div>
+              </Link>
+            )
+          })}
         </section>
       </main>
+
+      <BottomNav />
     </div>
   );
 }
