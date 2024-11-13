@@ -9,7 +9,7 @@ import { CoveyLogo } from "@/components/icons/covey-logo";
 
 const services = [
   {
-    name: "Swap, bridge chains, tap into liquidity, and trade perpetuals – all on one decentralized platform",
+    name: "Swap, bridge chains, tap into liquidity, and trade perpetuals.",
     image: "/images/shido.jpg",
     tags: ["SHIDO","Platform", "Web App"],
     websiteLink: "https://app.shido.io"
@@ -21,7 +21,7 @@ const services = [
     websiteLink: "https://offers.acquire.fi"
   },
   {
-    name: "Stake, earn, and dominate the leaderboard. The higher you climb, the sweeter the rewards and access.",
+    name: "Stake, earn, and dominate the leaderboard.",
     image: "/images/degen.jpg",
     tags: ["DRINK", "Web App", "Gamify"],
     websiteLink: "https://club.degendistillery.com"
@@ -39,7 +39,7 @@ const services = [
     websiteLink: "https://pool.shido.io"
   },
   {
-    name: "This intuitive platform offers a range of trading tools, cross-chain functionality, staking benefits, and boasts low fees for cost-effective trades.",
+    name: "This intuitive platform offers a range of trading tools.",
     image: "/images/shido-app.jpg",
     tags: ["iOS", "Android", "Wallet"],
     websiteLink: "https://apps.apple.com/nl/app/shido-app/id6473452165"
