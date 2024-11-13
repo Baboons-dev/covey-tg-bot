@@ -10,6 +10,7 @@ interface SwipeableCardStackProps {
 export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [exitX, setExitX] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   const removeCard = (direction: number) => {
     setExitX(direction);
@@ -19,11 +20,20 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
     }, 100);
   };
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
   const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const swipeThreshold = 100;
+    // Reduced swipe threshold for easier activation
+    const swipeThreshold = 50;
     if (Math.abs(info.offset.x) > swipeThreshold) {
       removeCard(info.offset.x > 0 ? 200 : -200);
     }
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
   };
 
   const handlePrevious = () => {
@@ -52,7 +62,7 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
   };
 
   return (
-    <div className="relative h-[520px] w-full max-w-md mx-auto">
+    <div className="relative h-[520px] w-full max-w-md mx-auto touch-pan-y">
       <div className="absolute top-0 left-0 right-0 h-[460px]">
         <AnimatePresence>
           {getVisibleCards().map((item, index) => {
@@ -64,16 +74,17 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
             return (
               <motion.div
                 key={`card-${item.originalIndex}`}
-                className="absolute w-full cursor-grab active:cursor-grabbing"
+                className={`absolute w-full cursor-grab active:cursor-grabbing ${isDragging ? 'touch-none' : 'touch-pan-x'}`}
                 style={{ 
                   zIndex: items.length - index,
                   transformOrigin: "bottom center",
-                  filter: index > 0 ? `brightness(${1 - index * 0.2})` : 'none'
+                  filter: index > 0 ? `brightness(${1 - index * 0.2})` : 'none',
+                  touchAction: 'pan-x'
                 }}
                 animate={{
                   x: isTop ? exitX : 0,
                   y: -stackOffset,
-                  rotate: isTop ? exitX * 0.05 : rotationOffset,
+                  rotate: isTop ? (exitX * 0.05) : rotationOffset,
                   scale: scaleOffset,
                 }}
                 initial={{
@@ -87,18 +98,36 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
                   ease: "easeOut"
                 }}
                 drag={isTop ? "x" : false}
-                dragConstraints={{ left: 0, right: 0 }}
-                onDragEnd={isTop ? handleDrag : undefined}
+                dragConstraints={{ left: -100, right: 100 }}
+                dragElastic={0.9}
+                onDragStart={handleDragStart}
+                onDrag={isTop ? handleDrag : undefined}
+                onDragEnd={handleDragEnd}
                 whileDrag={{
                   cursor: "grabbing",
-                  scale: 1.05,
+                  scale: 1.02,
                 }}
                 whileHover={isTop ? {
-                  scale: 1.05,
+                  scale: 1.02,
                   transition: { duration: 0.2 }
                 } : undefined}
               >
                 {renderItem(item)}
+                {isTop && (
+                  <div 
+                    className="absolute inset-0 flex justify-between items-center pointer-events-none px-4 opacity-0 transition-opacity duration-200"
+                    style={{
+                      opacity: isDragging ? 0.8 : 0
+                    }}
+                  >
+                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                      <ChevronLeft className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                      <ChevronRight className="w-8 h-8 text-white" />
+                    </div>
+                  </div>
+                )}
               </motion.div>
             );
           })}

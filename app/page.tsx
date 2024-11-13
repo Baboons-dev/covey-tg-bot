@@ -76,15 +76,15 @@ export default function Home() {
 
       <main className="container mx-auto px-6">
         {/* Welcome Section */}
-        <section className="pt-32 pb-12">
-          <div className="flex flex-col items-start space-y-3">
-            <h2 className="text-[#528385] text-2xl sm:text-3xl font-medium tracking-wide">
+        <section className="pt-24 pb-8">
+          <div className="flex flex-col items-start space-y-2">
+            <h2 className="text-[#528385] text-xl sm:text-2xl font-medium tracking-wide">
               {getGreeting()}
             </h2>
-            <h1 className="text-5xl sm:text-6xl font-bold text-white leading-tight">
+            <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight">
               {user.name} 👋
             </h1>
-            <p className="text-lg sm:text-xl text-white/80 mt-4 leading-relaxed max-w-2xl">
+            <p className="text-base sm:text-lg text-white/80 mt-2 leading-relaxed max-w-2xl">
               Welcome to Covey's portfolio of innovative Telegram applications. Explore our collection of powerful bots designed to enhance your digital experience.
             </p>
           </div>
