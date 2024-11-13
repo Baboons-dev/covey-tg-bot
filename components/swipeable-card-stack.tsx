@@ -14,10 +14,7 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
 
   const removeCard = (direction: number) => {
     setExitX(direction);
-    setTimeout(() => {
-      setCurrentIndex(prev => (prev + 1) % items.length);
-      setExitX(0);
-    }, 100);
+    setCurrentIndex(prev => (prev + 1) % items.length);
   };
 
   const handleDragStart = () => {
@@ -25,31 +22,25 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
   };
 
   const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    // Reduced swipe threshold for easier activation
-    const swipeThreshold = 50;
+    // Reduced swipe threshold and immediate transition
+    const swipeThreshold = 30;
     if (Math.abs(info.offset.x) > swipeThreshold) {
-      removeCard(info.offset.x > 0 ? 200 : -200);
+      const direction = info.offset.x > 0 ? 200 : -200;
+      removeCard(direction);
     }
   };
 
   const handleDragEnd = () => {
     setIsDragging(false);
+    setExitX(0);
   };
 
   const handlePrevious = () => {
-    setExitX(200);
-    setTimeout(() => {
-      setCurrentIndex(prev => (prev - 1 + items.length) % items.length);
-      setExitX(0);
-    }, 100);
+    setCurrentIndex(prev => (prev - 1 + items.length) % items.length);
   };
 
   const handleNext = () => {
-    setExitX(-200);
-    setTimeout(() => {
-      setCurrentIndex(prev => (prev + 1) % items.length);
-      setExitX(0);
-    }, 100);
+    setCurrentIndex(prev => (prev + 1) % items.length);
   };
 
   const getVisibleCards = () => {
@@ -64,7 +55,7 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
   return (
     <div className="relative h-[520px] w-full max-w-md mx-auto touch-pan-y">
       <div className="absolute top-0 left-0 right-0 h-[460px]">
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
           {getVisibleCards().map((item, index) => {
             const isTop = index === 0;
             const stackOffset = index * 40;
@@ -81,21 +72,26 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
                   filter: index > 0 ? `brightness(${1 - index * 0.2})` : 'none',
                   touchAction: 'pan-x'
                 }}
+                initial={{
+                  scale: isTop ? 0.8 : scaleOffset,
+                  y: isTop ? -stackOffset + 50 : -stackOffset,
+                  rotate: rotationOffset,
+                }}
                 animate={{
-                  x: isTop ? exitX : 0,
+                  scale: scaleOffset,
                   y: -stackOffset,
                   rotate: isTop ? (exitX * 0.05) : rotationOffset,
-                  scale: scaleOffset,
+                  x: isTop ? exitX : 0,
                 }}
-                initial={{
-                  x: isTop ? 0 : 0,
-                  y: -stackOffset,
-                  rotate: rotationOffset,
-                  scale: scaleOffset,
+                exit={{
+                  x: exitX,
+                  opacity: 0,
+                  scale: 0.8,
                 }}
                 transition={{
-                  duration: 0.2,
-                  ease: "easeOut"
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20,
                 }}
                 drag={isTop ? "x" : false}
                 dragConstraints={{ left: -100, right: 100 }}
@@ -134,7 +130,6 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
         </AnimatePresence>
       </div>
 
-      {/* Navigation Controls */}
       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2">
         <span className="text-sm text-white/80">
           Swipe to explore
