@@ -8,33 +8,27 @@ import { CoveyLogo } from "@/components/icons/covey-logo";
 
 const projects = [
   {
-    name: "AI Chat Assistant",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
-    tags: ["AI", "ChatGPT", "Machine Learning"],
+    name: "Value Laps",
+    image: "/images/cryptoautos.jpg",
+    tags: ["Cars", "Prices", "HP"],
     telegramLink: "https://t.me/your_bot_name"
   },
   {
-    name: "Smart Home Controller",
-    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f",
-    tags: ["IoT", "Automation", "Smart Home"],
+    name: "Nodeazy",
+    image: "/images/nodeazy.jpg",
+    tags: ["Node", "Mining"],
     telegramLink: "https://t.me/your_bot_name"
   },
   {
-    name: "Crypto Portfolio Tracker",
-    image: "https://images.unsplash.com/photo-1621761191319-c6fb62004040",
-    tags: ["Crypto", "Finance", "Blockchain"],
+    name: "PlayGPT",
+    image: "/images/playgpt.jpg",
+    tags: ["Gaming", "Robot"],
     telegramLink: "https://t.me/your_bot_name"
   },
   {
-    name: "Travel Planner",
-    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828",
-    tags: ["Travel", "Planning", "Maps"],
-    telegramLink: "https://t.me/your_bot_name"
-  },
-  {
-    name: "Fitness Coach",
-    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438",
-    tags: ["Health", "Fitness", "Coaching"],
+    name: "Escher",
+    image: "/images/escher.jpg",
+    tags: ["AI", "Quiz", "Learn"],
     telegramLink: "https://t.me/your_bot_name"
   }
 ];
@@ -58,13 +52,13 @@ export default function Home() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-lg border-b border-[#528385]/20">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <CoveyLogo className="w-[120px] h-auto" />
-          <a 
-            href="https://t.me/CoveySupport" 
-            target="_blank" 
+          <a
+            href="https://t.me/EspenCovey"
+            target="_blank"
             rel="noopener noreferrer"
           >
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               className="text-white hover:bg-[#528385]/20 gap-2"
             >
               <BrandTelegram className="w-5 h-5" />

@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { BrandTelegram } from "@/components/icons/brand-telegram";
+import Image from "next/image";
 
 interface ProjectCardProps {
   project: {
@@ -14,13 +15,17 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Card className="relative overflow-hidden group h-[400px] transition-all duration-300 hover:scale-[1.02] rounded-[2rem] shadow-xl border-0">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${project.image})` }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/40" />
+      <div className="absolute inset-0">
+        <Image
+          src={project.image}
+          alt={project.name}
+          fill
+          className="object-cover object-top sm:object-center"
+          priority
+        />
+        <div className="absolute inset-0 " />
       </div>
-      
+
       <div className="relative h-full p-6 flex flex-col justify-between">
         <div className="mt-4">
           <h3 className="text-2xl font-bold text-white mb-3">{project.name}</h3>
