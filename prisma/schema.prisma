@@ -20,6 +20,7 @@ model User {
   id                   String         @id @unique @default(uuid())
   fake_id              Int            @default(autoincrement())
   firstName            String
+  referralCode         String?         @unique
   language             String?
   telegramId           String         @unique
   email                String?
