@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @unique @default(uuid())
+  email     String   @unique
+  password  String
+  role      String   @default("Admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id                   String         @id @unique @default(uuid())
+  fake_id              Int            @default(autoincrement())
+  firstName            String
+  language             String?
+  telegramId           String         @unique
+  email                String?
+  wallet_address       String?
+  xp                   BigInt         @default(0)
+  referXp              BigInt         @default(0)
+  tapXp                BigInt         @default(0)
+  referBonus           BigInt         @default(0)
+  referExtraXp         Int            @default(0)
+  taskBonus            Int            @default(0)
+  otherBonus           Int            @default(0)
+  xpLost               Int            @default(0)
+  allTimeXp            BigInt         @default(0)
+  usdt                 Float          @default(0)
+  xpPerSecond          Float          @default(1)
+  lastXpUpdateAt       Int            @default(0)
+  lastReferUpdateAt    Int            @default(0)
+  charge               Float          @default(0)
+  active               Boolean        @default(true)
+  level                String         @default("Beginner")
+  claimedLevel         String?        @default("")
+  lastChargeUpdateAt   Int            @default(0)
+  code                 String?        @db.VarChar(50)
+  usedCodeId           String?
+  usedCode             User?          @relation("refer", fields: [usedCodeId], references: [id])
+  usedBy               User[]         @relation("refer")
+  UserProfile          UserProfile?
+  UserMilestone        UserMilestone?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  UserBooster          UserBooster[]
+  UserTask             UserTask[]
+  refBoostValue        Float          @default(0)
+  perSecondChargeDecay Float          @default(0.12)
+  unchargedAt          Int            @default(0)
+}
+
+model UserProfile {
+  id                 Int       @id @default(autoincrement())
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String    @unique
+  tapped             Int       @default(0)
+  lastChargedDay     DateTime? @db.Timestamp(0)
+  chargeStreak       Int       @default(0)
+  maxChargeStreak    Int       @default(0)
+  rewardBoost        Int       @default(0)
+  rewardBoostValue   Int       @default(0)
+  rewardBoostStartAt Int       @default(0)
+  rewardBoostEndAt   Int       @default(0)
+  referBoost         Int       @default(0)
+  referBoostValue    Int       @default(0)
+  referBoostStartAt  Int       @default(0)
+  referBoostEndAt    Int       @default(0)
+  chargeBoost        Int       @default(0)
+  chargeBoostValue   Int       @default(0)
+  chargeBoostStartAt Int       @default(0)
+  chargeBoostEndAt   Int       @default(0)
+}
+
+model UserMilestone {
+  id              Int     @id @default(autoincrement())
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String  @unique
+  ChargeStreak5   Boolean @default(false)
+  ChargeStreak10  Boolean @default(false)
+  ChargeStreak20  Boolean @default(false)
+  ChargeStreak30  Boolean @default(false)
+  ChargeStreak50  Boolean @default(false)
+  ChargeStreak100 Boolean @default(false)
+  ChargeStreak175 Boolean @default(false)
+  ChargeStreak250 Boolean @default(false)
+  invite1friend   Boolean @default(false)
+  invite5friend   Boolean @default(false)
+  invite10friend  Boolean @default(false)
+  tap10000        Boolean @default(false)
+  tap100000       Boolean @default(false)
+  tap1000000      Boolean @default(false)
+  fullyBoost      Boolean @default(false)
+  open1treasure   Boolean @default(false)
+  open5treasure   Boolean @default(false)
+  open15treasure  Boolean @default(false)
+}
+
+model UserBooster {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  boostId   Int
+  xpPrice   Int
+  days      Int
+  isPremium Boolean  @default(false)
+  type      String
+  details   String
+  createdAt DateTime @default(now())
+}
+
+enum TaskType {
+  Social
+  Weekly
+}
+
+enum TaskSocialType {
+  TG
+  Discord
+  Youtube
+  Twitter
+  Facebook
+  Instagram
+  Medium
+  Other
+}
+
+model Tasks {
+  id              String         @id @unique @default(uuid())
+  title           String
+  channelIdOrName String?
+  social          TaskSocialType
+  type            TaskType
+  link            String
+  reward          Int            @default(0)
+  active          Boolean        @default(true)
+  verifycode      String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  UserTask        UserTask[]
+}
+
+enum Status {
+  Created
+  Completed
+  Expire
+}
+
+model UserTask {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  task      Tasks?   @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  taskId    String?
+  reward    Int      @default(0)
+  type      TaskType
+  status    Status   @default(Created)
+  createdAt DateTime @default(now())
+}
+
+
