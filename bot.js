@@ -1,10 +1,11 @@
 const { Telegraf } = require("telegraf");
 const crypto = require("crypto-js");
 const web_link = "https://tg.covey.baboons.tech/";
-const TOKEN = "8037859602:AAFf8d8CBh9uq4OaCn7ok2pho95nokLH7H0";
+const TOKEN = "8158652234:AAEtFM3Q3gNZv5vsNrltxPN9Wx2uSGNEIUY";
 
 const bot = new Telegraf(TOKEN);
-var secretKey = "LefjQ2pEXmiy/nNZvEJ43i8hJuaAnzbA1Cbn1hOuAgA=";
+var secretKey =
+  "02PhgD8F4bgtA0T8WB2/y0dvrtHKXXMwtht3HZgyHSzAUrJwXRYjUV9z0lLB3siu";
 
 function random16String() {
   let result = "";

@@ -78,27 +78,27 @@ export const authOptions: NextAuthOptions = {
               },
             });
           }
-          console.log(user);
+          console.log("user", user);
 
           if (!user) {
             throw new Error("No user found with the provided email.");
           }
-          if (user && !user.referralCode && user.firstName) {
-            const code = cookReferralCode(6);
-            user = await prisma.user.update({
-              where: { telegramId: credentials.telegramId },
-              data: {
-                firstName: credentials.firstName,
-                // referralCode: code,
-              },
-              select: {
-                firstName: true,
-                telegramId: true,
-                createdAt: true,
-                updatedAt: true,
-              },
-            });
-          }
+          // if (user && !user.referralCode && user.firstName) {
+          //   const code = cookReferralCode(6);
+          //   user = await prisma.user.update({
+          //     where: { telegramId: credentials.telegramId },
+          //     data: {
+          //       firstName: credentials.firstName,
+          //       // referralCode: code,
+          //     },
+          //     select: {
+          //       firstName: true,
+          //       telegramId: true,
+          //       createdAt: true,
+          //       updatedAt: true,
+          //     },
+          //   });
+          // }
           return user;
         } else {
           throw new Error(`err:Invalid user`);
@@ -167,7 +167,7 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async session({ session, token }: any) {
-      console.log("session", token, session);
+      console.log("session: ", token, session);
       if (token && token.role && token.id) {
         session.user = {
           id: token.id,
@@ -177,6 +177,7 @@ export const authOptions: NextAuthOptions = {
         return session;
       } else if (token && token.id) {
         session.user = token;
+        console.log("ssesssion end: ", session);
         return session;
       }
       return {};
