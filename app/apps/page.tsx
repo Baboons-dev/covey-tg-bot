@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { ProjectCard } from "@/components/project-card";
 import { SwipeableCardStack } from "@/components/swipeable-card-stack";
@@ -12,26 +12,26 @@ const projects = [
     name: "Value Laps",
     image: "/images/cryptoautos.jpg",
     tags: ["Cars", "Prices", "HP"],
-    telegramLink: "https://t.me/your_bot_name"
+    telegramLink: "https://t.me/CryptoAutosGame_bot",
   },
   {
     name: "Nodeazy",
     image: "/images/nodeazy.jpg",
     tags: ["Node", "Mining"],
-    telegramLink: "https://t.me/your_bot_name"
+    telegramLink: "https://t.me/nodeazybot",
   },
   {
     name: "PlayGPT",
     image: "/images/playgpt.jpg",
     tags: ["Gaming", "Robot"],
-    telegramLink: "https://t.me/your_bot_name"
+    telegramLink: "https://t.me/PlayTapGPT_bot",
   },
   {
     name: "Escher",
     image: "/images/escher.jpg",
     tags: ["AI", "Quiz", "Learn"],
-    telegramLink: "https://t.me/your_bot_name"
-  }
+    telegramLink: "https://t.me/Escher_dev_bot",
+  },
 ];
 
 export default function AppsPage() {
@@ -65,7 +65,8 @@ export default function AppsPage() {
               Telegram Apps
             </h1>
             <p className="text-base sm:text-lg text-white/80 mt-2 leading-relaxed max-w-2xl">
-              Explore our collection of powerful Telegram bots designed to enhance your digital experience.
+              Explore our collection of powerful Telegram bots designed to
+              enhance your digital experience.
             </p>
           </div>
         </section>
@@ -74,9 +75,7 @@ export default function AppsPage() {
         <section className="pt-8">
           <SwipeableCardStack
             items={projects}
-            renderItem={(project) => (
-              <ProjectCard project={project} />
-            )}
+            renderItem={(project) => <ProjectCard project={project} />}
           />
         </section>
       </main>

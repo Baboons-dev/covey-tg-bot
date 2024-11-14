@@ -15,6 +15,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  console.log("project", project);
   const link = project.websiteLink || project.telegramLink;
   const isWebsite = Boolean(project.websiteLink);
 
@@ -61,7 +62,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           ) : (
             <>
               <BrandTelegram className="w-5 h-5" />
-              <span className="font-medium">Contact on Telegram</span>
+              <span className="font-medium">Open with Telegram</span>
             </>
           )}
         </a>
