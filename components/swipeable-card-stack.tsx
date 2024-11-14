@@ -1,27 +1,33 @@
-import { useState } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from "react";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface SwipeableCardStackProps {
   items: any[];
   renderItem: (item: any) => React.ReactNode;
 }
 
-export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProps) {
+export function SwipeableCardStack({
+  items,
+  renderItem,
+}: SwipeableCardStackProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [exitX, setExitX] = useState<number>(0);
   const [isDragging, setIsDragging] = useState(false);
 
   const removeCard = (direction: number) => {
     setExitX(direction);
-    setCurrentIndex(prev => (prev + 1) % items.length);
+    setCurrentIndex((prev) => (prev + 1) % items.length);
   };
 
   const handleDragStart = () => {
     setIsDragging(true);
   };
 
-  const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDrag = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
     // Reduced swipe threshold and immediate transition
     const swipeThreshold = 30;
     if (Math.abs(info.offset.x) > swipeThreshold) {
@@ -36,16 +42,16 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
   };
 
   const handlePrevious = () => {
-    setCurrentIndex(prev => (prev - 1 + items.length) % items.length);
+    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
   };
 
   const handleNext = () => {
-    setCurrentIndex(prev => (prev + 1) % items.length);
+    setCurrentIndex((prev) => (prev + 1) % items.length);
   };
 
   const getVisibleCards = () => {
     const cards = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < items.length; i++) {
       const index = (currentIndex + i) % items.length;
       cards.push({ ...items[index], originalIndex: index });
     }
@@ -65,12 +71,14 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
             return (
               <motion.div
                 key={`card-${item.originalIndex}`}
-                className={`absolute w-full cursor-grab active:cursor-grabbing ${isDragging ? 'touch-none' : 'touch-pan-x'}`}
-                style={{ 
+                className={`absolute w-full cursor-grab active:cursor-grabbing ${
+                  isDragging ? "touch-none" : "touch-pan-x"
+                }`}
+                style={{
                   zIndex: items.length - index,
                   transformOrigin: "bottom center",
-                  filter: index > 0 ? `brightness(${1 - index * 0.2})` : 'none',
-                  touchAction: 'pan-x'
+                  filter: index > 0 ? `brightness(${1 - index * 0.2})` : "none",
+                  touchAction: "pan-x",
                 }}
                 initial={{
                   scale: isTop ? 0.8 : scaleOffset,
@@ -80,7 +88,7 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
                 animate={{
                   scale: scaleOffset,
                   y: -stackOffset,
-                  rotate: isTop ? (exitX * 0.05) : rotationOffset,
+                  rotate: isTop ? exitX * 0.05 : rotationOffset,
                   x: isTop ? exitX : 0,
                 }}
                 exit={{
@@ -103,17 +111,21 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
                   cursor: "grabbing",
                   scale: 1.02,
                 }}
-                whileHover={isTop ? {
-                  scale: 1.02,
-                  transition: { duration: 0.2 }
-                } : undefined}
+                whileHover={
+                  isTop
+                    ? {
+                        scale: 1.02,
+                        transition: { duration: 0.2 },
+                      }
+                    : undefined
+                }
               >
                 {renderItem(item)}
                 {isTop && (
-                  <div 
+                  <div
                     className="absolute inset-0 flex justify-between items-center pointer-events-none px-4 opacity-0 transition-opacity duration-200"
                     style={{
-                      opacity: isDragging ? 0.8 : 0
+                      opacity: isDragging ? 0.8 : 0,
                     }}
                   >
                     <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
@@ -131,9 +143,7 @@ export function SwipeableCardStack({ items, renderItem }: SwipeableCardStackProp
       </div>
 
       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2">
-        <span className="text-sm text-white/80">
-          Swipe to explore
-        </span>
+        <span className="text-sm text-white/80">Swipe to explore</span>
         <div className="flex items-center gap-4">
           <button
             onClick={handlePrevious}
