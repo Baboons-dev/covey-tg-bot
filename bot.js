@@ -1,13 +1,14 @@
-const { Telegraf } = require("telegraf");
-const crypto = require("crypto-js");
-const web_link = "https://tg.covey.baboons.tech/";
-const TOKEN = "8037859602:AAFf8d8CBh9uq4OaCn7ok2pho95nokLH7H0";
+const {Telegraf} = require('telegraf');
+const crypto = require('crypto-js');
+const web_link = 'https://tg.covey.baboons.tech/';
+const TOKEN = '8037859602:AAFf8d8CBh9uq4OaCn7ok2pho95nokLH7H0';
 
 const bot = new Telegraf(TOKEN);
-var secretKey = "LefjQ2pEXmiy/nNZvEJ43i8hJuaAnzbA1Cbn1hOuAgA=";
+var secretKey =
+  '02PhgD8F4bgtA0T8WB2/y0dvrtHKXXMwtht3HZgyHSzAUrJwXRYjUV9z0lLB3siu';
 
 function random16String() {
-  let result = "";
+  let result = '';
   for (let i = 0; i < 16; i++) {
     result += Math.floor(Math.random() * 10);
   }
@@ -29,22 +30,22 @@ function encrypt(text) {
   return randomInt16 + payload;
 }
 
-bot.command("start", async (ctx) => {
+bot.command('start', async (ctx) => {
   let userId = ctx.update.message.from.id;
-  let encrypted = "+";
+  let encrypted = '+';
   do {
     encrypted = encrypt(userId.toString());
-  } while (encrypted.includes("+"));
+  } while (encrypted.includes('+'));
   if (userId && encrypted) {
     ctx.setChatMenuButton({
-      text: "Game",
-      type: "web_app",
+      text: 'Game',
+      type: 'web_app',
       web_app: {
-        url: web_link + "?tgId=" + encodeURIComponent(encrypted),
+        url: web_link + '?tgId=' + encodeURIComponent(encrypted),
       },
     });
   } else {
-    ctx.reply("Failed to encrypt. Please type start again");
+    ctx.reply('Failed to encrypt. Please type start again');
   }
   // sets Web App as the menu button for current chat
 });
